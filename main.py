@@ -1836,6 +1836,7 @@ class Bot:
                 await self.weather.refresh(station, sorted(set(days)), now_ms, force)
             except Exception as error:
                 self.log_limited(f"weather:{stid}", f"{stid} 观测刷新异常：{clean_error(error)}")
+        self.targets(now_ms)  # a ladder read since the targets were listed may have named a station: queue its probe now
         for site in list(self.pending_sites):
             try:
                 await self.weather.probe(site, now_ms)
@@ -2722,12 +2723,14 @@ def id_text(user_id: int, chat: int, thread: int) -> str:
 
 
 # --- entry points ---------------------------------------------------------------------------------------------------------------
-async def check_once(config: Config) -> int:
+async def check_once(config: Config, clock: Any = None) -> int:
     """`python main.py --check`: one refresh of every source and market, the status cards printed; nothing is sent."""
     store = Store(":memory:")
     bot = Bot(config, store, None)
+    if clock is not None:
+        bot.clock = clock
     try:
-        now_ms = int(time.time() * 1000)
+        now_ms = bot.now_ms()
         targets = bot.targets(now_ms)
         await bot.predict_cycle(now_ms, targets, force=True)
         await bot.weather_cycle(now_ms, targets, force=True)

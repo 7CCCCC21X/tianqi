@@ -285,9 +285,11 @@ async def run():
     assert bot4.weather.official("ZSPD", DAY).peak()[0] == 27 and not bot4.target_errors
 
     # --check prints the cards without Telegram
+    net.resolved = {}
+    net.markets = [("m24", "24°C or below"), ("m25", "25°C"), ("m26", "26°C"), ("m27", "27°C"), ("m28", "28°C or higher")]
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
-        code = await m.check_once(config)
+        code = await m.check_once(config, clock=lambda: now1 / 1000)
     assert code == 0 and "🌡 上海 10-13 最高气温" in out.getvalue() and "买 25¢×100" in out.getvalue()
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
