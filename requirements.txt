@@ -1,0 +1,2 @@
+# No third-party Python packages are required.
+# Uses only the Python standard library; Docker supplies Python 3.12 (+ the system tzdata table).

@@ -1,0 +1,10 @@
+TELEGRAM_BOT_TOKEN=替换成BotFather给你的Token
+ADMIN_USER_ID=0
+CITIES=shanghai
+FOLLOW_DAYS=1
+SYNOPTIC_TOKEN=替换成你在synopticdata.com申请的token（留空用公开演示token）
+POLL_SECONDS=60
+NOAA_POLL_SECONDS=600
+PREDICT_POLL_SECONDS=20
+EDGE_ALERT_CENTS=10
+STATE_DB=/data/tianqi.sqlite3
